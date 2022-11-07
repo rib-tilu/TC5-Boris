@@ -1,12 +1,14 @@
 from classes import *
 import numpy as np
 from graphes import *
+from champs import B_uniforme as f_B
+from champs import E_onde_plane as f_E
 
 
 ### Constantes numériques ###
 
 
-Nt = 100 ## nombre de pas temporels
+Nt = 1000 ## nombre de pas temporels
 
 Nc = 20 ## nombre de pas par orbite
 
@@ -32,7 +34,7 @@ X = Vector(0,0,0)
 
 # vecteur vitesse (m/s)
 
-V = Vector(100000, 100000, 100000)
+V = Vector(1000000, 1000000, 1000000)
 
 
 # tableaux pour stocker les paramètres de la trajectoire
@@ -42,13 +44,13 @@ traj_x, traj_y, traj_z = [], [], []
 Ec, Mu, Rlarmor, temps = [], [], [], []
 
 
-# champs magnétique et électrique (parties réelle et imaginaire)
+# versions stationnaires des champs magnétique et électrique (parties réelle et imaginaire)
 
 B = Vector(0, 0, m*omega/abs(q))
 
-RE = Vector(0,0,0)
+RE = Vector(100000,-100000,0)
 
-IE = Vector(0,0,0)
+IE = Vector(0,-1000,1000)
 
 
 
@@ -67,7 +69,9 @@ for k in range(Nt):
     
     Xinter = X.plus(V.produit(DT))
     
-    E = Vector(RE.x*np.cos(k*omega*dt) + IE.x*np.sin(k*omega*dt), RE.y*np.cos(k*omega*dt) + IE.y*np.sin(k*omega*dt), RE.z*np.cos(k*omega*dt) + IE.z*np.sin(k*omega*dt))
+    B = f_B(B, Xinter, k*dt)
+    
+    E = f_E(RE, IE, omega, Xinter, k*dt)
     
     
     phase = step(Xinter, V, B, E, q, m, dt) # tableau pour stocker [X,V]
@@ -109,7 +113,3 @@ plot_1d_graphs(temps, Ec, "Energie cinétique", "t [ps]", "Ec [eV]")
 plot_1d_graphs(temps, Rlarmor, "Rayon de Larmor", "t [ps]", "Rl [cm]")
 
 plot_1d_graphs(temps, Mu, "Moment magnetique", "t [ps]", r"$\mu$ [A.m$^{2}$]")
-
-a = Vector(1,1,1)
-
-print(Vector(1,1,1).plus(a.produit(3)))
