@@ -1,3 +1,5 @@
+# Vector and method classes for the implementation of the Boris algorithm
+
 class Vector: ## for all 3D-vectors
     
     def __init__(self, x, y, z):
@@ -46,25 +48,25 @@ class Vector: ## for all 3D-vectors
 
     
 
-def produit_scalaire(u, v):
+def produit_scalaire(u, v): # scalar product of 2 vectors
         
     return u.x*v.x + u.y*v.y + u.z*v.z
 
 
 
-def produit_vectoriel(u, v):
+def produit_vectoriel(u, v): # cross product of 2 vectors
             
     return Vector(u.y*v.z - u.z*v.y, u.z*v.x - u.x*v.z, u.x*v.y - u.y*v.x)
     
 
 
-def gamma(v):
+def gamma(v): # Lorentz factor calculus
     
     return 1/( 1 - produit_scalaire(v,v)/(299792458**2) )**0.5
 
 
 
-def U(v):
+def U(v): 
     
     return v.produit(gamma(v))
 
@@ -85,6 +87,8 @@ def V(u):
 ###############################################################################
 ###############################################################################
 
+# Function taking as an input the position, velocity, fields vectors of the particle and performing a single 
+# time step using the relativistic Boris algorithm, it returns the new position and velocity vectors
 
 
 def step(posk, vitk, Bk, Ek, charge, masse, delta_t):

@@ -1,24 +1,19 @@
+# Fonctions donnant les expressions des champs E ou B utilisés
+
 from classes import *
 import numpy as np
-
-###############################################################################
-#                             CHAMP MAGNÉTIQUE                                #
-###############################################################################
-
-def B_uniforme(vB, position, t):
-    
-    return vB
 
 ###############################################################################
 #                             CHAMP ÉLECTRIQUE                                #
 ###############################################################################
 
-def E_uniforme(rE, iE, position, t):
+def E_noyau(Znoy, pos): # singe nucleus located at the origin
     
-    return rE
+    return pos.produit((Znoy*1.602e-19)/(4*np.pi*8.85e-12*(pos.norm()**3)))
 
 
 
-def E_onde_plane(rE, iE, pulsation, position, t):
-    
-    return (rE.produit(np.cos(pulsation*t))).plus(iE.produit(np.sin(pulsation*t)))
+###############################################################################
+#                             CHAMP MAGNÉTIQUE                                #
+###############################################################################
+
